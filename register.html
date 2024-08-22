@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng Ký</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .register-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+            position: relative;
+        }
+
+        .register-container h2 {
+            margin-bottom: 20px;
+        }
+
+        .register-container input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .register-container input.error {
+            border-color: red;
+        }
+
+        .register-container .error-message {
+            color: red;
+            font-size: 12px;
+            margin-bottom: 10px;
+            display: none;
+        }
+
+        .register-container button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .register-container button:hover {
+            background-color: #45a049;
+        }
+
+        .back-button {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 10px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .back-button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+    <button class="back-button" onclick="window.location.href='index.html'">Quay trở lại trang chủ</button>
+
+    <div class="register-container">
+        <h2>Đăng Ký</h2>
+        <input type="text" id="reg-username" placeholder="Tên đăng nhập">
+        <div class="error-message" id="username-error">Không được để trống</div>
+        <input type="text" id="full-name" placeholder="Họ và tên">
+        <div class="error-message" id="full-name-error">Không được để trống</div>
+        <input type="tel" id="phone" placeholder="Số điện thoại">
+        <div class="error-message" id="phone-error">Không được để trống</div>
+        <input type="email" id="email" placeholder="Email">
+        <div class="error-message" id="email-error">Không được để trống</div>
+        <input type="text" id="address" placeholder="Địa chỉ">
+        <div class="error-message" id="address-error">Không được để trống</div>
+        <input type="password" id="reg-password" placeholder="Mật khẩu">
+        <div class="error-message" id="password-error">Mật khẩu phải chứa cả chữ cái và chữ số.</div>
+        <input type="password" id="confirm-password" placeholder="Xác nhận mật khẩu">
+        <div class="error-message" id="confirm-password-error">Mật khẩu và xác nhận mật khẩu không khớp.</div>
+        <button onclick="register()">Đăng Ký</button>
+    </div>
+
+    <script>
+        function validateForm() {
+            const username = document.getElementById('reg-username').value.trim();
+            const fullName = document.getElementById('full-name').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const address = document.getElementById('address').value.trim();
+            const password = document.getElementById('reg-password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+
+            let isValid = true;
+
+            // Reset errors
+            document.querySelectorAll('.error-message').forEach(e => e.style.display = 'none');
+            document.querySelectorAll('input').forEach(e => e.classList.remove('error'));
+
+            if (!username) {
+                isValid = false;
+                document.getElementById('username-error').style.display = 'block';
+                document.getElementById('reg-username').classList.add('error');
+            }
+
+            if (!fullName) {
+                isValid = false;
+                document.getElementById('full-name-error').style.display = 'block';
+                document.getElementById('full-name').classList.add('error');
+            }
+
+            if (!phone) {
+                isValid = false;
+                document.getElementById('phone-error').style.display = 'block';
+                document.getElementById('phone').classList.add('error');
+            }
+
+            if (!email) {
+                isValid = false;
+                document.getElementById('email-error').style.display = 'block';
+                document.getElementById('email').classList.add('error');
+            }
+
+            if (!address) {
+                isValid = false;
+                document.getElementById('address-error').style.display = 'block';
+                document.getElementById('address').classList.add('error');
+            }
+
+            if (!password) {
+                isValid = false;
+                document.getElementById('password-error').style.display = 'block';
+                document.getElementById('reg-password').classList.add('error');
+            } else if (!/(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}/.test(password)) {
+                isValid = false;
+                document.getElementById('password-error').style.display = 'block';
+                document.getElementById('reg-password').classList.add('error');
+            }
+
+            if (password !== confirmPassword) {
+                isValid = false;
+                document.getElementById('confirm-password-error').style.display = 'block';
+                document.getElementById('confirm-password').classList.add('error');
+            }
+
+            return isValid;
+        }
+
+        function register() {
+            if (!validateForm()) {
+                return;
+            }
+
+            const username = document.getElementById('reg-username').value.trim();
+            const fullName = document.getElementById('full-name').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const address = document.getElementById('address').value.trim();
+            const password = document.getElementById('reg-password').value;
+
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            if (users.some(user => user.username === username)) {
+                alert('Tên đăng nhập đã tồn tại.');
+                return;
+            }
+
+            users.push({ username, fullName, phone, email, address, password });
+            localStorage.setItem('users', JSON.stringify(users));
+            alert('Đăng ký thành công!');
+            window.location.href = 'login.html';
+        }
+    </script>
+
+</body>
+</html>
