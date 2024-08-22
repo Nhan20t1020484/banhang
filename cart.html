@@ -4,159 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Giỏ Hàng</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
-
-        .header {
-            background-color: #333;
-            color: white;
-            padding: 10px 0;
-            text-align: center;
-            position: relative;
-        }
-
-        .header h1 {
-            margin: 0;
-        }
-
-        .header .header-buttons {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-        }
-
-        .header .header-buttons a,
-        .header .header-buttons button {
-            color: white;
-            text-decoration: none;
-            padding: 10px;
-            background-color: #4CAF50;
-            border-radius: 4px;
-            margin: 0 5px;
-            font-size: 14px;
-            border: none;
-            cursor: pointer;
-        }
-
-        .header .header-buttons a:hover,
-        .header .header-buttons button:hover {
-            background-color: #45a049;
-        }
-
-        .cart-item {
-            background-color: white;
-            padding: 20px;
-            margin-bottom: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .cart-item input {
-            width: 60px;
-            text-align: center;
-        }
-
-        .cart-item button {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            padding: 5px 10px;
-            font-size: 12px;
-        }
-
-        .cart-item button:hover {
-            background-color: #45a049;
-        }
-
-        .total {
-            text-align: right;
-            margin-top: 20px;
-            font-size: 18px;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-    <div class="header">
-        <button class="header-buttons" onclick="window.location.href='index.html'">Quay trở lại trang chủ</button>
-        <h1>Giỏ Hàng</h1>
-    </div>
+    <button class="back-button" onclick="window.location.href='index.html'">Quay trở lại trang chủ</button>
 
-    <div class="container" id="cart-items">
-        <!-- Items will be dynamically added here -->
-    </div>
-
-    <div class="total" id="total">
-        Tổng tiền: 0 ₫
-    </div>
-
-    <div class="container">
+    <div class="cart-container">
+        <h2>Giỏ Hàng</h2>
+        <div id="cart-items">
+            <!-- Items will be dynamically added here -->
+        </div>
+        <div class="total" id="total">Tổng tiền: 0 ₫</div>
         <button onclick="checkout()">Thanh Toán</button>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
-            const cartContainer = document.getElementById('cart-items');
-            const totalElement = document.getElementById('total');
-            
-            let total = 0;
-
-            cartItems.forEach(item => {
-                total += item.price * item.quantity;
-                const itemDiv = document.createElement('div');
-                itemDiv.className = 'cart-item';
-                itemDiv.innerHTML = `
-                    <span>${item.name}</span>
-                    <input type="number" value="${item.quantity}" min="1" onchange="updateQuantity('${item.name}', this.value)">
-                    <span>${item.price} ₫</span>
-                    <button onclick="removeFromCart('${item.name}')">Xóa</button>
-                `;
-                cartContainer.appendChild(itemDiv);
-            });
-
-            totalElement.textContent = `Tổng tiền: ${total} ₫`;
-        });
-
-        function updateQuantity(name, quantity) {
-            const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
-            const item = cartItems.find(item => item.name === name);
-            if (item) {
-                item.quantity = parseInt(quantity, 10);
-                localStorage.setItem('cart', JSON.stringify(cartItems));
-                updateTotal();
-            }
-        }
-
-        function removeFromCart(name) {
-            let cartItems = JSON.parse(localStorage.getItem('cart')) || [];
-            cartItems = cartItems.filter(item => item.name !== name);
-            localStorage.setItem('cart', JSON.stringify(cartItems));
-            window.location.reload();
-        }
-
-        function updateTotal() {
-            const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
-            const total = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
-            document.getElementById('total').textContent = `Tổng tiền: ${total} ₫`;
-        }
-
-        function checkout() {
-            alert('Thanh toán thành công!');
-            localStorage.removeItem('cart');
-            window.location.href = 'index.html';
-        }
-    </script>
-
+    <script src="cart.js"></script>
 </body>
 </html>

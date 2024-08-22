@@ -3,170 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trang Chủ - Sản Phẩm</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
-
-        .header {
-            background-color: #333;
-            color: white;
-            padding: 10px 0;
-            text-align: center;
-            position: relative;
-        }
-
-        .header h1 {
-            margin: 0;
-        }
-
-        .header .header-buttons {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-        }
-
-        .header .header-buttons a,
-        .header .header-buttons button {
-            color: white;
-            text-decoration: none;
-            padding: 10px;
-            background-color: #4CAF50;
-            border-radius: 4px;
-            margin: 0 5px;
-            font-size: 14px;
-            border: none;
-            cursor: pointer;
-        }
-
-        .header .header-buttons a:hover,
-        .header .header-buttons button:hover {
-            background-color: #45a049;
-        }
-
-        .cart-icon {
-            font-size: 24px;
-            cursor: pointer;
-            color: white;
-        }
-
-        .container {
-            width: 80%;
-            margin: 0 auto;
-        }
-
-        .product {
-            background-color: white;
-            padding: 20px;
-            margin-bottom: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .product h3 {
-            margin: 0;
-            font-size: 18px;
-        }
-
-        .product button {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            padding: 10px;
-        }
-
-        .product button:hover {
-            background-color: #45a049;
-        }
-    </style>
+    <title>Trang Chủ</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-
-    <div class="header">
-        <h1>Trang Chủ - Sản Phẩm</h1>
-        <div class="header-buttons">
-            <span id="username-display"></span>
-            <button id="auth-button">Đăng Nhập</button>
-            <span class="cart-icon" onclick="handleCartClick()">&#128722;</span>
+    <header>
+        <button class="back-button" onclick="window.location.href='index.html'">Quay trở lại trang chủ</button>
+        <div class="header-content">
+            <button id="login-button" class="header-buttons">Đăng Nhập</button>
+            <span id="username-display" class="username-display"></span>
+            <button class="header-buttons" onclick="window.location.href='cart.html'">
+                <i class="fas fa-shopping-cart"></i>
+            </button>
         </div>
-    </div>
-
-    <div class="container">
-        <div class="product">
-            <h3>Sản phẩm 1</h3>
-            <button onclick="addToCart('Sản phẩm 1', 100000)">Đặt hàng</button>
+    </header>
+    <main>
+        <h1>Trang Chủ</h1>
+        <div class="products">
+            <!-- Example Product -->
+            <div class="product">
+                <h2>Sản phẩm 1</h2>
+                <p>Giá: 100.000 ₫</p>
+                <button class="order-button" onclick="addToCart('Sản phẩm 1', 100000)">
+                    <i class="fas fa-cart-plus"></i> Đặt hàng
+                </button>
+            </div>
+            <!-- Add more products as needed -->
         </div>
-        <div class="product">
-            <h3>Sản phẩm 2</h3>
-            <button onclick="addToCart('Sản phẩm 2', 200000)">Đặt hàng</button>
-        </div>
-    </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const loggedIn = localStorage.getItem('loggedIn') === 'true';
-            const username = localStorage.getItem('username');
-
-            const usernameDisplay = document.getElementById('username-display');
-            const authButton = document.getElementById('auth-button');
-
-            if (loggedIn) {
-                usernameDisplay.textContent = `Xin chào, ${username}`;
-                authButton.textContent = 'Đăng Xuất';
-                authButton.onclick = logout;
-            } else {
-                usernameDisplay.textContent = '';
-                authButton.textContent = 'Đăng Nhập';
-                authButton.onclick = () => window.location.href = 'login.html';
-            }
-        });
-
-        function addToCart(productName, productPrice) {
-            const loggedIn = localStorage.getItem('loggedIn') === 'true';
-            if (!loggedIn) {
-                alert('Bạn cần đăng nhập để tiếp tục mua hàng.');
-                window.location.href = 'login.html';
-                return;
-            }
-
-            const cart = JSON.parse(localStorage.getItem('cart')) || [];
-            const existingItem = cart.find(item => item.name === productName);
-
-            if (existingItem) {
-                existingItem.quantity += 1;
-            } else {
-                cart.push({ name: productName, price: productPrice, quantity: 1 });
-            }
-
-            localStorage.setItem('cart', JSON.stringify(cart));
-            alert('Sản phẩm đã được thêm vào giỏ hàng.');
-        }
-
-        function handleCartClick() {
-            const loggedIn = localStorage.getItem('loggedIn') === 'true';
-            if (!loggedIn) {
-                alert('Bạn cần đăng nhập để xem giỏ hàng.');
-                window.location.href = 'login.html';
-            } else {
-                window.location.href = 'cart.html';
-            }
-        }
-
-        function logout() {
-            localStorage.removeItem('loggedIn');
-            localStorage.removeItem('username');
-            window.location.href = 'login.html';
-        }
-    </script>
-
+    </main>
+    <script src="index.js"></script>
 </body>
 </html>
